@@ -38,7 +38,7 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    background-color: #1e3a1e; /* Premium Dark Green for matching image_07cd6d.png */
+    background-color: #1e3a1e; 
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     z-index: 1000;
     padding: 20px 0;
@@ -54,7 +54,7 @@ body {
     font-family: 'Playfair Display', serif;
     font-size: 28px;
     font-weight: 700;
-    color: #e2ba43; /* Matching golden logo */
+    color: #e2ba43; 
     letter-spacing: 0.5px;
 }
 
@@ -376,15 +376,19 @@ body {
     color: var(--white);
     border: none;
     padding: 16px;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 600;
     border-radius: 6px;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2);
+}
+
+.btn-submit i {
+    font-size: 22px; /* WhatsApp icon inside button */
 }
 
 .btn-submit:hover {
@@ -433,21 +437,21 @@ body {
 }
 
 /* ==========================================================================
-   7. Floating Components & Safe Reset (No-Blank Trigger)
+   7. Floating Components & Safe Reset (Anti-Blanking)
    ========================================================================== */
 .floating-whatsapp {
     position: fixed;
     bottom: 30px;
     right: 30px;
     background-color: var(--success-color);
-    color: var(--white);
+    color: var(--white) !important;
     width: 60px;
     height: 60px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 32px;
+    font-size: 34px;
     box-shadow: 0 6px 20px rgba(0,0,0,0.2);
     z-index: 9999;
     transition: transform 0.3s ease;
@@ -456,10 +460,8 @@ body {
 
 .floating-whatsapp:hover {
     transform: scale(1.1);
-    color: var(--white);
 }
 
-/* SAFE RESET: Agar JS crash bhi ho jaye, toh content hamesha visible rahega */
 .reveal {
     position: relative;
     transform: translateY(0) !important;
