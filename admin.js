@@ -10,7 +10,9 @@ const Store = {
   getMenu() { 
     try {
       const stored = localStorage.getItem('madhuramMenu');
-      return stored ? JSON.parse(stored) : [];
+      const parsed = stored ? JSON.parse(stored) : [];
+      // Safety Check: Force an array structure to prevent rendering crashes
+      return Array.isArray(parsed) ? parsed : [];
     } catch(e) { return []; }
   },
   saveMenu(m) { 
@@ -19,12 +21,13 @@ const Store = {
       window.dispatchEvent(new Event('storage'));
     } catch (error) {
       console.error("Storage write failed:", error);
-      alert("❌ Image File is Too Large!\n\nYour browser limits dashboard storage to 5MB total. Please upload a smaller/compressed photo (under 500KB) or use a Web Image URL link instead.");
+      alert("❌ Image File is Too Large!\n\nYour browser limits dashboard storage to 5MB total. Please upload a smaller photo or use a Web Image URL link.");
     }
   },
   getInquiries() { 
     try {
-      return JSON.parse(localStorage.getItem('madhuramInquiries')) || []; 
+      const parsed = JSON.parse(localStorage.getItem('madhuramInquiries')) || [];
+      return Array.isArray(parsed) ? parsed : [];
     } catch(e) { return []; }
   },
   getSettings() { 
@@ -41,7 +44,7 @@ const Store = {
   clearAuth() { sessionStorage.removeItem('madhuramAdminAuth'); }
 };
 
-// Gatekeeper Login Verification with Auto-Trim
+// Gatekeeper Login Verification with Automatic Space Trimming
 document.getElementById('loginForm')?.addEventListener('submit', e => {
   e.preventDefault();
   const user = document.getElementById('loginUser').value.trim();
@@ -62,65 +65,83 @@ function initializeInterface() {
 }
 
 function loadDashboardData() {
-  const menu = Store.getMenu();
-  const inquiries = Store.getInquiries();
-  
-  document.getElementById('statMenuItems').textContent = menu.length;
-  document.getElementById('statReservations').textContent = inquiries.length;
-  
-  // Render Dynamic Inventory Records
-  const tableBody = document.getElementById('menuTableBody');
-  if (menu.length === 0) {
-    tableBody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-400 text-xs font-medium">No records matching live structural storage.</td></tr>`;
-  } else {
-    tableBody.innerHTML = menu.map(i => `
-      <tr class="hover:bg-slate-50/80 transition-colors">
-        <td class="p-4">
-          <div class="w-12 h-12 rounded-xl overflow-hidden border border-slate-100 bg-slate-100 shrink-0 shadow-inner">
-            <img src="${i.image || 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=100&q=75'}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=100&q=75'" />
-          </div>
-        </td>
-        <td class="p-4 font-semibold text-slate-900">${escapeHTML(i.name)}</td>
-        <td class="p-4"><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 uppercase tracking-wider">${i.category}</span></td>
-        <td class="p-4 font-mono font-bold text-brand">${i.price}</td>
-        <td class="p-4 text-right">
-          <button onclick="deleteItem(${i.id})" class="text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-all">Purge</button>
-        </td>
-      </tr>
-    `).join('');
+  try {
+    const menu = Store.getMenu();
+    const inquiries = Store.getInquiries();
+    
+    // Check elements exist before writing to prevent runtime freezes
+    if(document.getElementById('statMenuItems')) document.getElementById('statMenuItems').textContent = menu.length;
+    if(document.getElementById('statReservations')) document.getElementById('statReservations').textContent = inquiries.length;
+    
+    // Render Dynamic Inventory Records
+    const tableBody = document.getElementById('menuTableBody');
+    if (tableBody) {
+      if (menu.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-400 text-xs font-medium">No records matching live structural storage.</td></tr>`;
+      } else {
+        tableBody.innerHTML = menu.map(i => `
+          <tr class="hover:bg-slate-50/80 transition-colors">
+            <td class="p-4">
+              <div class="w-12 h-12 rounded-xl overflow-hidden border border-slate-100 bg-slate-100 shrink-0 shadow-inner">
+                <img src="${i.image || 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=100&q=75'}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=100&q=75'" />
+              </div>
+            </td>
+            <td class="p-4 font-semibold text-slate-900">${escapeHTML(i.name)}</td>
+            <td class="p-4"><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 uppercase tracking-wider">${i.category}</span></td>
+            <td class="p-4 font-mono font-bold text-brand">${i.price}</td>
+            <td class="p-4 text-right">
+              <button onclick="deleteItem(${i.id})" class="text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-all">Purge</button>
+            </td>
+          </tr>
+        `).join('');
+      }
+    }
+
+    // Render Guest Feedback Inbound Logs
+    const inqBody = document.getElementById('inquiryTableBody');
+    if (inqBody) {
+      inqBody.innerHTML = inquiries.length === 0 ? 
+        `<tr><td colspan="4" class="p-8 text-center text-slate-400 text-xs font-medium">Inbound tracking pipeline empty.</td></tr>` :
+        inquiries.map(i => `
+          <tr class="hover:bg-slate-50/80 transition-colors">
+            <td class="p-4 font-semibold text-slate-900">${escapeHTML(i.name)}</td>
+            <td class="p-4 font-mono text-xs text-slate-600">${escapeHTML(i.phone)}</td>
+            <td class="p-4"><span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 text-xs font-medium border border-emerald-100">${escapeHTML(i.type)}</span></td>
+            <td class="p-4 text-xs text-slate-400 font-medium">${i.date}</td>
+          </tr>
+        `).join('');
+    }
+
+    // Hydrate Analytics Breakdowns safely
+    const overviewInq = document.getElementById('overviewInquiries');
+    if (overviewInq) {
+      overviewInq.innerHTML = inquiries.slice(0, 3).map(i => `
+        <div class="py-3 flex justify-between items-center">
+          <div><p class="font-semibold text-slate-800">${escapeHTML(i.name)}</p><p class="text-xs text-slate-400">${i.date}</p></div>
+          <span class="text-[10px] uppercase font-bold tracking-widest text-slate-400">${escapeHTML(i.type)}</span>
+        </div>
+      `).join('') || `<p class="py-4 text-slate-400 text-xs">No notifications pipeline detected.</p>`;
+    }
+
+    const overviewCats = document.getElementById('overviewCategories');
+    if (overviewCats) {
+      const cats = { starters: 0, main: 0, thalis: 0 };
+      menu.forEach(m => { if(cats[m.category] !== undefined) cats[m.category]++; });
+      overviewCats.innerHTML = Object.entries(cats).map(([c, count]) => `
+        <div class="py-3 flex justify-between items-center uppercase tracking-wider text-xs font-semibold">
+          <span class="text-slate-500">${c === 'main' ? 'Main Course' : c}</span>
+          <span class="font-mono text-brand bg-slate-100 px-2 py-0.5 rounded-md">${count} units</span>
+        </div>
+      `).join('');
+    }
+
+    if(document.getElementById('setAddress')) document.getElementById('setAddress').value = Store.getSettings().address;
+    if(document.getElementById('setPhone')) document.getElementById('setPhone').value = Store.getSettings().phone;
+
+  } catch (criticalRenderError) {
+    console.error("Dashboard engine rendering failure, wiping out data error blocks:", criticalRenderError);
+    localStorage.clear(); // Safe hard-reset on syntax corruption detection
   }
-
-  // Render Guest Feedback Inbound Logs
-  document.getElementById('inquiryTableBody').innerHTML = inquiries.length === 0 ? 
-    `<tr><td colspan="4" class="p-8 text-center text-slate-400 text-xs font-medium">Inbound tracking pipeline empty.</td></tr>` :
-    inquiries.map(i => `
-      <tr class="hover:bg-slate-50/80 transition-colors">
-        <td class="p-4 font-semibold text-slate-900">${escapeHTML(i.name)}</td>
-        <td class="p-4 font-mono text-xs text-slate-600">${escapeHTML(i.phone)}</td>
-        <td class="p-4"><span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 text-xs font-medium border border-emerald-100">${escapeHTML(i.type)}</span></td>
-        <td class="p-4 text-xs text-slate-400 font-medium">${i.date}</td>
-      </tr>
-    `).join('');
-
-  // Hydrate Analytics Breakdowns
-  document.getElementById('overviewInquiries').innerHTML = inquiries.slice(0, 3).map(i => `
-    <div class="py-3 flex justify-between items-center">
-      <div><p class="font-semibold text-slate-800">${escapeHTML(i.name)}</p><p class="text-xs text-slate-400">${i.date}</p></div>
-      <span class="text-[10px] uppercase font-bold tracking-widest text-slate-400">${escapeHTML(i.type)}</span>
-    </div>
-  `).join('') || `<p class="py-4 text-slate-400 text-xs">No notifications pipeline detected.</p>`;
-
-  const cats = { starters: 0, main: 0, thalis: 0 };
-  menu.forEach(m => { if(cats[m.category] !== undefined) cats[m.category]++; });
-  document.getElementById('overviewCategories').innerHTML = Object.entries(cats).map(([c, count]) => `
-    <div class="py-3 flex justify-between items-center uppercase tracking-wider text-xs font-semibold">
-      <span class="text-slate-500">${c === 'main' ? 'Main Course' : c}</span>
-      <span class="font-mono text-brand bg-slate-100 px-2 py-0.5 rounded-md">${count} units</span>
-    </div>
-  `).join('');
-
-  document.getElementById('setAddress').value = Store.getSettings().address;
-  document.getElementById('setPhone').value = Store.getSettings().phone;
 }
 
 function deleteItem(id) {
@@ -148,15 +169,16 @@ document.querySelectorAll('.sidebar-link').forEach(btn => {
     document.querySelectorAll('.sidebar-link').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
-    document.getElementById('panel-' + btn.dataset.panel).classList.remove('hidden');
+    const targetedPanel = document.getElementById('panel-' + btn.dataset.panel);
+    if(targetedPanel) targetedPanel.classList.remove('hidden');
     document.getElementById('pageTitle').textContent = btn.textContent.trim();
   });
 });
 
-function openMenuModal() { document.getElementById('menuModal').classList.remove('hidden'); }
-function closeMenuModal() { document.getElementById('menuModal').classList.add('hidden'); }
+function openMenuModal() { document.getElementById('menuModal')?.classList.remove('hidden'); }
+function closeMenuModal() { document.getElementById('menuModal')?.classList.add('hidden'); }
 
-document.getElementById('menuItemForm').addEventListener('submit', async function(e){
+document.getElementById('menuItemForm')?.addEventListener('submit', async function(e){
   e.preventDefault();
   
   const currentMenu = Store.getMenu();
@@ -169,7 +191,7 @@ document.getElementById('menuItemForm').addEventListener('submit', async functio
   
   let structuralAssetUrl = '';
 
-  if (fileInput.files && fileInput.files[0]) {
+  if (fileInput && fileInput.files && fileInput.files[0]) {
     try {
       structuralAssetUrl = await convertImageToBase64(fileInput.files[0]);
     } catch (err) {
@@ -199,7 +221,7 @@ document.getElementById('menuItemForm').addEventListener('submit', async functio
   loadDashboardData();
 });
 
-document.getElementById('settingsForm').addEventListener('submit', function(e){
+document.getElementById('settingsForm')?.addEventListener('submit', function(e){
   e.preventDefault();
   const base = Store.getSettings();
   base.address = document.getElementById('setAddress').value;
