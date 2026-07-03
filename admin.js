@@ -42,7 +42,7 @@ document.getElementById('loginForm')?.addEventListener('submit', e => {
   const user = document.getElementById('loginUser').value;
   const pass = document.getElementById('loginPass').value;
   
-  if (user === 'admin' && pass === 'madhuram2024') {
+  if (user === 'Admin' && pass === 'Madhuram2024') {
     Store.setAuth();
     initializeInterface();
   } else {
