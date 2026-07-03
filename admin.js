@@ -35,27 +35,20 @@ const Store = {
   setAuth() { sessionStorage.setItem('madhuramAdminAuth', 'true'); },
   clearAuth() { sessionStorage.removeItem('madhuramAdminAuth'); }
 };
-
-// Gatekeeper Login Verification
+// Gatekeeper Login Verification (With Auto-Trim to prevent space errors)
 document.getElementById('loginForm')?.addEventListener('submit', e => {
   e.preventDefault();
-  const user = document.getElementById('loginUser').value;
-  const pass = document.getElementById('loginPass').value;
+  // .trim() removes any accidental spaces before or after the text
+  const user = document.getElementById('loginUser').value.trim();
+  const pass = document.getElementById('loginPass').value.trim();
   
-  if (user === 'Admin' && pass === 'Madhuram2024') {
+  if (user === 'admin' && pass === 'madhuram2024') {
     Store.setAuth();
     initializeInterface();
   } else {
     document.getElementById('loginErr').classList.remove('hidden');
   }
 });
-
-function initializeInterface() {
-  document.getElementById('loginScreen').classList.add('hidden');
-  document.getElementById('dashboard').classList.remove('hidden');
-  loadDashboardData();
-}
-
 function loadDashboardData() {
   const menu = Store.getMenu();
   const inquiries = Store.getInquiries();
