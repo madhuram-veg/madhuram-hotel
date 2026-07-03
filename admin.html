@@ -3,136 +3,272 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin – Madhuram Restaurant</title>
+  <title>Control Panel — Madhuram Restaurant</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              DEFAULT: '#1E3F20',
+              dark: '#142b15',
+              mid: '#2a5430',
+              light: '#3a7040',
+              accent: '#D4AF37'
+            }
+          },
+          fontFamily: {
+            sans: ['"Inter"', 'system-ui', 'sans-serif'],
+            serif: ['"Playfair Display"', 'Georgia', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="admin.css" />
 </head>
-<body class="font-sans bg-gray-100 min-h-screen">
+<body class="font-sans bg-slate-50 text-slate-800 antialiased min-h-screen">
 
-  <!-- LOGIN SCREEN -->
-  <div id="loginScreen" class="min-h-screen flex items-center justify-center bg-zinc-900 px-4">
-    <div class="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8">
-      <h2 class="text-2xl font-bold text-emerald-800 mb-6 text-center">Madhuram Admin</h2>
-      <form id="loginForm" class="space-y-5">
-        <div class="flex flex-col gap-1">
-          <label class="text-xs font-semibold">Username</label>
-          <input type="text" id="loginUser" class="border p-2.5 rounded-lg" placeholder="admin" />
-        </div>
-        <div class="flex flex-col gap-1">
-          <label class="text-xs font-semibold">Password</label>
-          <input type="password" id="loginPass" class="border p-2.5 rounded-lg" placeholder="••••••••" />
-        </div>
-        <p id="loginErr" class="text-red-500 text-sm hidden">Invalid Credentials.</p>
-        <button type="submit" class="w-full bg-emerald-800 text-white py-3 rounded-lg font-bold transition hover:bg-emerald-900">Login</button>
-      </form>
+  <!-- AUTHENTICATION GATE -->
+  <div id="loginScreen" class="min-h-screen flex items-center justify-center bg-brand-dark px-4 relative overflow-hidden">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(212,175,55,0.12),transparent_45%)]"></div>
+    <div class="w-full max-w-md relative z-10">
+      <div class="text-center mb-8">
+        <h2 class="font-serif font-bold text-3xl text-white tracking-wide">Madhuram</h2>
+        <p class="text-brand-accent text-xs font-semibold tracking-widest uppercase mt-1">Management Portal</p>
+      </div>
+      <div class="bg-white rounded-2xl shadow-xl p-8 border border-white/10">
+        <h3 class="text-xl font-bold text-slate-900 mb-6">Account Sign In</h3>
+        <form id="loginForm" class="space-y-5">
+          <div class="space-y-1.5">
+            <label class="text-xs font-medium text-slate-600">Administrative Username</label>
+            <input type="text" id="loginUser" autocomplete="username" class="w-full border border-slate-200 bg-slate-50 p-3 rounded-xl text-sm outline-none focus:border-brand focus:bg-white focus:ring-2 focus:ring-brand/10 transition-all" placeholder="admin" required />
+          </div>
+          <div class="space-y-1.5">
+            <label class="text-xs font-medium text-slate-600">Security Password</label>
+            <input type="password" id="loginPass" autocomplete="current-password" class="w-full border border-slate-200 bg-slate-50 p-3 rounded-xl text-sm outline-none focus:border-brand focus:bg-white focus:ring-2 focus:ring-brand/10 transition-all" placeholder="••••••••" required />
+          </div>
+          <p id="loginErr" class="text-red-600 text-xs font-medium hidden flex items-center gap-1">❌ Authentication parameters failed.</p>
+          <button type="submit" class="w-full bg-brand text-white py-3.5 rounded-xl font-semibold text-sm tracking-wide transition-all hover:bg-brand-mid active:scale-[0.99] shadow-lg shadow-brand/10">Access Workspace</button>
+        </form>
+      </div>
     </div>
   </div>
 
-  <!-- MAIN DASHBOARD PANEL -->
-  <div id="dashboard" class="hidden min-h-screen flex">
-    <aside class="w-60 bg-zinc-900 text-gray-300 flex flex-col">
-      <div class="p-6 border-b border-zinc-800 font-bold text-white tracking-wide">MADHURAM PANEL</div>
+  <!-- APPLICATION WORKSPACE -->
+  <div id="dashboard" class="hidden min-h-screen flex flex-col md:flex-row">
+    
+    <!-- PRIMARY NAVIGATION SIDEBAR -->
+    <aside class="w-full md:w-64 bg-brand-dark text-slate-300 flex flex-col border-r border-brand/20 shrink-0">
+      <div class="p-6 border-b border-white/5 flex items-center gap-3">
+        <div class="w-3 h-3 bg-brand-accent rounded-full shrink-0 shadow-sm shadow-brand-accent/50"></div>
+        <span class="font-serif font-bold text-lg text-white tracking-wider">Madhuram Hub</span>
+      </div>
       <nav class="flex-1 p-4 space-y-1">
-        <button class="w-full text-left p-3 rounded-lg active sidebar-link" data-panel="overview">Dashboard Overview</button>
-        <button class="w-full text-left p-3 rounded-lg sidebar-link" data-panel="menu-mgmt">Menu Management</button>
-        <button class="w-full text-left p-3 rounded-lg sidebar-link" data-panel="inquiries">Form Inquiries</button>
-        <button class="w-full text-left p-3 rounded-lg sidebar-link" data-panel="settings">Business Settings</button>
+        <button class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium active sidebar-link transition-all" data-panel="overview">
+          <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4zM14 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2v-4z"/></svg>
+          Overview
+        </button>
+        <button class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium sidebar-link transition-all" data-panel="menu-mgmt">
+          <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.232.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+          Menu Inventory
+        </button>
+        <button class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium sidebar-link transition-all" data-panel="inquiries">
+          <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8m-5 5h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293h3.172a1 1 0 00.707-.293l2.414-2.414a1 1 0 01.707-.293H20"/></svg>
+          Guest Inquiries
+        </button>
+        <button class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium sidebar-link transition-all" data-panel="settings">
+          <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Configurations
+        </button>
       </nav>
-      <div class="p-4"><button onclick="logout()" class="w-full border border-red-500/30 text-red-400 p-2 rounded-lg hover:bg-red-500/10">Sign Out</button></div>
+      <div class="p-4 border-t border-white/5 bg-black/10">
+        <button onclick="logout()" class="w-full flex items-center justify-center gap-2 border border-red-500/20 text-red-400 py-2.5 rounded-xl text-sm font-medium transition-all hover:bg-red-500/10 hover:border-red-500/40">
+          Disconnect Session
+        </button>
+      </div>
     </aside>
 
-    <main class="flex-1 bg-gray-50 flex flex-col">
-      <header class="bg-white border-b px-8 py-4 flex justify-between items-center shadow-sm">
-        <h1 id="pageTitle" class="text-xl font-bold text-gray-800">Overview</h1>
+    <!-- WORKSPACE CANVAS -->
+    <main class="flex-1 overflow-y-auto flex flex-col">
+      <header class="bg-white border-b border-slate-100 px-8 py-5 flex justify-between items-center shrink-0">
+        <div class="space-y-0.5">
+          <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Management Framework</p>
+          <h1 id="pageTitle" class="text-xl font-bold text-slate-900 tracking-tight">Analytics Dashboard</h1>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="text-right hidden sm:block">
+            <p class="text-sm font-semibold text-slate-900">Administrator Profile</p>
+            <p class="text-xs text-emerald-600 font-medium flex items-center justify-end gap-1"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span> Live Context</p>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-brand/10 border border-brand/20 flex items-center justify-center font-bold text-brand text-sm tracking-wide">M</div>
+        </div>
       </header>
 
-      <div class="p-8">
-        <!-- OVERVIEW -->
-        <div id="panel-overview" class="panel active space-y-6">
-          <div class="grid grid-cols-3 gap-6">
-            <div class="bg-white p-6 rounded-xl border shadow-sm"><div class="text-3xl font-bold text-emerald-800" id="statMenuItems">0</div><div class="text-sm text-gray-500">Menu Items</div></div>
-            <div class="bg-white p-6 rounded-xl border shadow-sm"><div class="text-3xl font-bold text-amber-600" id="statReservations">0</div><div class="text-sm text-gray-500">New Inquiries</div></div>
+      <div class="p-8 flex-1">
+        
+        <!-- MODULE: OVERVIEW -->
+        <div id="panel-overview" class="panel active space-y-8">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+              <div class="space-y-1">
+                <p class="text-sm font-medium text-slate-500">Live Menu Count</p>
+                <p class="text-3xl font-bold text-slate-900 tracking-tight" id="statMenuItems">0</p>
+              </div>
+              <div class="p-3 bg-brand/5 border border-brand/10 text-brand rounded-xl">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+              </div>
+            </div>
+            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between">
+              <div class="space-y-1">
+                <p class="text-sm font-medium text-slate-500">Inbound Operations</p>
+                <p class="text-3xl font-bold text-slate-900 tracking-tight" id="statReservations">0</p>
+              </div>
+              <div class="p-3 bg-amber-500/5 border border-amber-500/10 text-amber-600 rounded-xl">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.033 6.033 0 00-4.59-5.736C13.38 3.998 12.063 3 10.5 3s-2.88 1 3-2.264a6.033 6.033 0 00-4.59 5.736V14.158c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+              </div>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-4">
+              <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Recent Inbound Metrics</h3>
+              <div id="overviewInquiries" class="divide-y divide-slate-100 text-sm"></div>
+            </div>
+            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-4">
+              <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider">Categorization Balance</h3>
+              <div id="overviewCategories" class="divide-y divide-slate-100 text-sm"></div>
+            </div>
           </div>
         </div>
 
-        <!-- MENU MODULE -->
-        <div id="panel-menu-mgmt" class="panel hidden space-y-4">
-          <div class="flex justify-between items-center">
-            <h2 class="text-lg font-bold text-gray-800">Dishes List</h2>
-            <button onclick="openMenuModal()" class="bg-emerald-800 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-emerald-900">+ Add Item</button>
+        <!-- MODULE: MENU INVENTORY -->
+        <div id="panel-menu-mgmt" class="panel hidden space-y-6">
+          <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+            <div class="space-y-0.5">
+              <h2 class="text-lg font-bold text-slate-900 tracking-tight">Active Menu Allocation</h2>
+              <p class="text-xs text-slate-500">Add, alter, or remove catalog records from display frameworks seamlessly.</p>
+            </div>
+            <button onclick="openMenuModal()" class="bg-brand text-white px-5 py-2.5 rounded-xl text-sm font-semibold tracking-wide transition-all hover:bg-brand-mid shadow-lg shadow-brand/10">+ Append Record</button>
           </div>
-          <div class="bg-white rounded-xl border shadow-sm overflow-hidden">
-            <table class="w-full text-left border-collapse">
-              <thead><tr class="bg-gray-50 border-b text-xs text-gray-500 uppercase"><th class="p-4">Item Name</th><th class="p-4">Category</th><th class="p-4">Price</th><th class="p-4">Actions</th></tr></thead>
-              <tbody id="menuTableBody"></tbody>
-            </table>
+          <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-sm">
+                <thead>
+                  <tr class="bg-slate-50 border-b border-slate-100 text-xs font-bold text-slate-400 uppercase tracking-wider">
+                    <th class="p-4">Visual asset</th>
+                    <th class="p-4">Dish Title</th>
+                    <th class="p-4">System Tag</th>
+                    <th class="p-4">Price Grid</th>
+                    <th class="p-4 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="menuTableBody" class="divide-y divide-slate-50"></tbody>
+              </table>
+            </div>
           </div>
         </div>
 
-        <!-- INQUIRIES -->
+        <!-- MODULE: INQUIRIES -->
         <div id="panel-inquiries" class="panel hidden">
-          <div class="bg-white rounded-xl border shadow-sm overflow-hidden">
-            <table class="w-full text-left border-collapse">
-              <thead><tr class="bg-gray-50 border-b text-xs text-gray-500 uppercase"><th class="p-4">Guest</th><th class="p-4">Phone</th><th class="p-4">Type</th><th class="p-4">Date</th></tr></thead>
-              <tbody id="inquiryTableBody"></tbody>
-            </table>
+          <div class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse text-sm">
+                <thead>
+                  <tr class="bg-slate-50 border-b border-slate-100 text-xs font-bold text-slate-400 uppercase tracking-wider">
+                    <th class="p-4">Client</th>
+                    <th class="p-4">Phone Network</th>
+                    <th class="p-4">Context Block</th>
+                    <th class="p-4">Inbound Date</th>
+                  </tr>
+                </thead>
+                <tbody id="inquiryTableBody" class="divide-y divide-slate-50"></tbody>
+              </table>
+            </div>
           </div>
         </div>
 
-        <!-- SETTINGS -->
-        <div id="panel-settings" class="panel hidden max-w-xl bg-white border p-6 rounded-xl shadow-sm">
-          <form id="settingsForm" class="space-y-4">
-            <div class="flex flex-col gap-1"><label class="text-xs font-semibold">Address</label><input type="text" id="setAddress" class="border p-2 rounded-lg text-sm" /></div>
-            <div class="flex flex-col gap-1"><label class="text-xs font-semibold">Phone</label><input type="text" id="setPhone" class="border p-2 rounded-lg text-sm" /></div>
-            <button type="submit" class="bg-emerald-800 text-white px-4 py-2 rounded-lg text-sm font-semibold">Save Changes</button>
+        <!-- MODULE: CONFIGURATIONS -->
+        <div id="panel-settings" class="panel hidden max-w-2xl bg-white border border-slate-100 p-8 rounded-2xl shadow-sm">
+          <form id="settingsForm" class="space-y-6">
+            <h3 class="text-base font-bold text-slate-900 border-b border-slate-100 pb-3">Operational Identity</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="space-y-1.5">
+                <label class="text-xs font-semibold text-slate-600">Secure Contact Number</label>
+                <input type="text" id="setPhone" class="w-full border border-slate-200 bg-slate-50 p-3 rounded-xl text-sm outline-none focus:border-brand focus:bg-white transition-all" />
+              </div>
+            </div>
+            <div class="space-y-1.5">
+              <label class="text-xs font-semibold text-slate-600">Physical Registry Address</label>
+              <textarea id="setAddress" rows="3" class="w-full border border-slate-200 bg-slate-50 p-3 rounded-xl text-sm outline-none focus:border-brand focus:bg-white transition-all resize-none"></textarea>
+            </div>
+            <div class="pt-2">
+              <button type="submit" class="bg-brand text-white px-6 py-3 rounded-xl text-sm font-semibold tracking-wide transition-all hover:bg-brand-mid shadow-lg shadow-brand/10">Commit Configurations</button>
+            </div>
           </form>
         </div>
+
       </div>
     </main>
   </div>
 
-  <!-- ADD MENU MODAL (With both Link & Upload option) -->
-  <div id="menuModal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-    <div class="bg-white rounded-xl p-6 w-full max-w-md shadow-2xl">
-      <h3 class="text-lg font-bold mb-4 text-emerald-800">Add Menu Item</h3>
-      <form id="menuItemForm" class="space-y-4">
-        <div class="flex flex-col gap-1">
-          <label class="text-xs font-semibold">Dish Name *</label>
-          <input type="text" id="itemName" placeholder="e.g. Paneer Butter Masala" class="w-full border p-2 rounded-lg text-sm" required />
+  <!-- MULTI-MODE ASSET CREATION OVERLAY (MODAL) -->
+  <div id="menuModal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in">
+    <div class="bg-white rounded-2xl p-8 w-full max-w-lg shadow-2xl border border-slate-100 transition-all transform scale-100">
+      <div class="flex justify-between items-center border-b border-slate-100 pb-4 mb-6">
+        <h3 class="text-lg font-bold text-slate-900 tracking-tight">Append Catalog Record</h3>
+        <button onclick="closeMenuModal()" class="text-slate-400 hover:text-slate-600 transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <form id="menuItemForm" class="space-y-5">
+        <div class="space-y-1.5">
+          <label class="text-xs font-semibold text-slate-700">Dish Designation/Name *</label>
+          <input type="text" id="itemName" placeholder="e.g. Kadhai Paneer" class="w-full border border-slate-200 p-3 rounded-xl text-sm outline-none focus:border-brand transition-all" required />
         </div>
-        <div class="flex flex-col gap-1">
-          <label class="text-xs font-semibold">Category *</label>
-          <select id="itemCategory" class="w-full border p-2 rounded-lg text-sm" required>
-            <option value="starters">Starters</option>
-            <option value="main">Main Course</option>
-            <option value="thalis">Thalis</option>
-          </select>
-        </div>
-        <div class="flex flex-col gap-1">
-          <label class="text-xs font-semibold">Price *</label>
-          <input type="text" id="itemPrice" placeholder="e.g. 180" class="w-full border p-2 rounded-lg text-sm" required />
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="space-y-1.5">
+            <label class="text-xs font-semibold text-slate-700">Operational Allocation Tag *</label>
+            <select id="itemCategory" class="w-full border border-slate-200 bg-white p-3 rounded-xl text-sm outline-none focus:border-brand transition-all" required>
+              <option value="starters">Starters</option>
+              <option value="main">Main Course</option>
+              <option value="thalis">Thalis</option>
+            </select>
+          </div>
+          <div class="space-y-1.5">
+            <label class="text-xs font-semibold text-slate-700">Price Structure (INR) *</label>
+            <input type="text" id="itemPrice" placeholder="e.g. 240" class="w-full border border-slate-200 p-3 rounded-xl text-sm outline-none focus:border-brand transition-all" required />
+          </div>
         </div>
         
-        <!-- IMAGE SELECTION: URL OR UPLOAD -->
-        <div class="border-t pt-3 space-y-3">
-          <span class="text-xs font-bold text-gray-500 block">Dish Image (Choose One Option)</span>
+        <!-- INTEGRATED MULTI-CHANNEL VISUAL ASSET MANAGEMENT BLOCK -->
+        <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200/60 space-y-4">
+          <span class="text-xs font-bold text-slate-500 uppercase tracking-wider block">Visual Asset Ingestion Engine</span>
           
-          <div class="flex flex-col gap-1">
-            <label class="text-xs font-semibold text-gray-600">Option A: Direct Photo Upload</label>
-            <input type="file" id="itemImageFile" accept="image/*" class="w-full border p-1 rounded-lg text-xs bg-gray-50" />
+          <div class="space-y-1.5">
+            <label class="text-xs font-semibold text-slate-600">Deployment Stream A: Local Binary Upload</label>
+            <input type="file" id="itemImageFile" accept="image/*" class="w-full border border-slate-200 bg-white p-2 rounded-xl text-xs text-slate-500 file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-brand/10 file:text-brand hover:file:bg-brand/20 transition-all" />
           </div>
           
-          <div class="text-center text-xs text-gray-400 font-bold">— OR —</div>
+          <div class="relative flex py-1 items-center">
+            <div class="flex-grow border-t border-slate-200"></div>
+            <span class="flex-shrink mx-3 text-slate-400 text-[10px] font-bold tracking-widest uppercase">Cross-Channel Fallback</span>
+            <div class="flex-grow border-t border-slate-200"></div>
+          </div>
           
-          <div class="flex flex-col gap-1">
-            <label class="text-xs font-semibold text-gray-600">Option B: Web Image URL Link</label>
-            <input type="url" id="itemImageUrl" placeholder="https://example.com/food.jpg" class="w-full border p-2 rounded-lg text-sm" />
+          <div class="space-y-1.5">
+            <label class="text-xs font-semibold text-slate-600">Deployment Stream B: Web Architecture Absolute URL</label>
+            <input type="url" id="itemImageUrl" placeholder="https://images.unsplash.com/photo-..." class="w-full border border-slate-200 p-2.5 rounded-xl text-xs outline-none focus:border-brand bg-white transition-all" />
           </div>
         </div>
 
-        <div class="flex gap-2 pt-2">
-          <button type="submit" class="flex-1 bg-emerald-800 text-white py-2 rounded-lg font-semibold hover:bg-emerald-900">Save Item</button>
-          <button type="button" onclick="closeMenuModal()" class="flex-1 bg-gray-100 py-2 rounded-lg text-gray-600 font-semibold hover:bg-gray-200">Cancel</button>
+        <div class="flex gap-3 pt-3 border-t border-slate-100">
+          <button type="submit" class="flex-1 bg-brand text-white py-3 rounded-xl font-semibold text-sm tracking-wide transition-all hover:bg-brand-mid shadow-lg shadow-brand/10">Commit Matrix</button>
+          <button type="button" onclick="closeMenuModal()" class="flex-1 bg-slate-100 text-slate-600 py-3 rounded-xl font-semibold text-sm transition-all hover:bg-slate-200">Dismiss Overlay</button>
         </div>
       </form>
     </div>
