@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function() {
         for (let i = 0; i < reveals.length; i++) {
             let windowHeight = window.innerHeight;
             let elementTop = reveals[i].getBoundingClientRect().top;
-            let elementVisible = 100; // Jab user thoda scroll karega, tab animation trigger hogi
+            let elementVisible = 100; // Animation trigger margin
 
             if (elementTop < windowHeight - elementVisible) {
                 reveals[i].classList.add("active");
@@ -14,37 +14,33 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    // Scroll event par function ko run karna
     window.addEventListener("scroll", revealOnScroll);
-    
-    // Website khulte hi jo pehli fold par dikhe, uske liye instant check
-    revealOnScroll();
+    revealOnScroll(); // Instant execution check
 
-    // --- WHATSAPP ORDER FORM HANDLER ---
+    // --- WHATSAPP FORM SUBMISSION SYSTEM ---
     const whatsappForm = document.getElementById('whatsappForm');
     if (whatsappForm) {
         whatsappForm.addEventListener('submit', function(e) {
-            e.preventDefault(); // Default submission block karein
+            e.preventDefault(); 
 
-            // Hotel Owner ka WhatsApp Number (International Format)
+            // Target Phone Number 
             const ownerPhoneNumber = "918305005751"; 
 
-            // Form inputs extract karein
+            // Form Fields Data
             const name = document.getElementById('custName').value;
             const type = document.getElementById('orderType').value;
             const details = document.getElementById('orderDetails').value;
 
-            // WhatsApp Message Layout Setup
+            // Structured WhatsApp Text Layout
             const message = `*--- Naya Order / Booking Aayi Hai ---*%0A%0A` +
                             `*Customer Name:* ${encodeURIComponent(name)}%0A` +
                             `*Service Type:* ${encodeURIComponent(type)}%0A` +
                             `*Details:* ${encodeURIComponent(details)}%0A%0A` +
                             `_Sent from Madhuram Website_`;
 
-            // WhatsApp dynamic URL API trigger
             const whatsappUrl = `https://wa.me/${ownerPhoneNumber}?text=${message}`;
             
-            // Naye tab mein direct chat open karna
+            // Redirect or trigger popup tab
             window.open(whatsappUrl, '_blank');
         });
     }
