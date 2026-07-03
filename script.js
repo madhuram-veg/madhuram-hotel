@@ -1,25 +1,24 @@
 document.getElementById('whatsappForm').addEventListener('submit', function(e) {
-    e.preventDefault(); // Form ko page refresh karne se rokna
+    e.preventDefault(); // Page refresh hone se rokna
 
-    // 1. Hotel Owner ka WhatsApp number yahan dalein (Bina '+' ya '0' ke, direct country code '91' ke sath)
-    // Example ke liye agar number 9876543210 hai toh '919876543210' likhein
-    const ownerPhoneNumber = "91XXXXXXXXXX"; 
+    // Hotel Owner ka WhatsApp number country code (91) ke sath
+    const ownerPhoneNumber = "918305005751"; 
 
-    // 2. Form se data nikalna
+    // Form se values lena
     const name = document.getElementById('custName').value;
     const type = document.getElementById('orderType').value;
     const details = document.getElementById('orderDetails').value;
 
-    // 3. WhatsApp Message ka format banana
+    // WhatsApp par message kis tarah likha hua jayega uska format
     const message = `*--- Naya Order Aaya Hai ---*%0A%0A` +
                     `*Naam:* ${encodeURIComponent(name)}%0A` +
                     `*Type:* ${encodeURIComponent(type)}%0A` +
                     `*Details:* ${encodeURIComponent(details)}%0A%0A` +
                     `_Sent from Madhuram Website_`;
 
-    // 4. WhatsApp link taiyar karna
+    // Final WhatsApp link generator
     const whatsappUrl = `https://wa.me/${ownerPhoneNumber}?text=${message}`;
 
-    // 5. Naye tab mein WhatsApp open kar dena
+    // Naye tab mein chat kholna
     window.open(whatsappUrl, '_blank');
 });
