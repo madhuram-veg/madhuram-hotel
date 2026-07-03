@@ -1,303 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Madhuram Pure Veg Hotel & Restaurant – Bhopal</title>
-  <meta name="description" content="Authentic Flavors, Pure Vegetarian Delights. Shop no. S, 77, Nehru Nagar Main Rd, Kolar Rd, Bhopal, Madhya Pradesh 462003." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            green:  { DEFAULT: '#1E3F20', dark: '#142b15', mid: '#2a5430', light: '#3a7040' },
-            gold:   { DEFAULT: '#D4AF37', dark: '#b8961e', light: '#e8cc6a' },
-            cream:  { DEFAULT: '#FDFBF7', dark: '#F5F0E8' },
-          },
-          fontFamily: {
-            serif: ['"Playfair Display"', 'Georgia', 'serif'],
-            sans:  ['"Inter"', 'system-ui', 'sans-serif'],
-          },
-        }
-      }
-    }
-  </script>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madhuram Pure Veg Hotel & Restaurant | Bhopal</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="style.css?v=3">
 </head>
-<body class="font-sans bg-cream text-gray-800 overflow-x-hidden">
+<body>
 
-  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-5">
-    <div class="max-w-6xl mx-auto px-6 flex items-center justify-between">
-      <a href="#home" class="flex items-center gap-2 nav-brand" onclick="smoothScroll(event,'home')">
-        <span class="brand-dot"></span>
-        <span class="font-serif font-bold text-2xl">Madhuram</span>
-      </a>
-      <ul id="navMenu" class="hidden md:flex items-center gap-8">
-        <li><a href="#home"    class="nav-link" onclick="smoothScroll(event,'home')">Home</a></li>
-        <li><a href="#menu"    class="nav-link" onclick="smoothScroll(event,'menu')">Menu</a></li>
-        <li><a href="#about"   class="nav-link" onclick="smoothScroll(event,'about')">About</a></li>
-        <li><a href="#contact" class="nav-link" onclick="smoothScroll(event,'contact')">Contact</a></li>
-        <li>
-          <a href="tel:08305005751" id="navPhone"
-             class="flex items-center gap-2 bg-gold text-green-dark font-semibold text-sm px-5 py-2.5 rounded-full transition-all hover:bg-gold-dark hover:scale-105 shadow-md">
-            📞 Call Now
-          </a>
-        </li>
-      </ul>
-      <button id="hamburger" class="md:hidden flex flex-col gap-1.5 p-2 z-[1100]" aria-label="Toggle menu">
-        <span class="ham-line"></span>
-        <span class="ham-line"></span>
-        <span class="ham-line"></span>
-      </button>
-    </div>
-    <div id="mobileMenu" class="md:hidden mobile-menu-panel">
-      <div class="flex flex-col gap-5 pt-8 pb-10 px-8">
-        <a href="#home"    class="mobile-nav-link" onclick="closeMobileMenu();smoothScroll(event,'home')">Home</a>
-        <a href="#menu"    class="mobile-nav-link" onclick="closeMobileMenu();smoothScroll(event,'menu')">Menu</a>
-        <a href="#about"   class="mobile-nav-link" onclick="closeMobileMenu();smoothScroll(event,'about')">About</a>
-        <a href="#contact" class="mobile-nav-link" onclick="closeMobileMenu();smoothScroll(event,'contact')">Contact</a>
-        <a href="tel:08305005751" class="btn-gold-full mt-2">📞 Call to Order</a>
-      </div>
-    </div>
-  </nav>
-
-  <section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden">
-    <div class="hero-bg-img absolute inset-0 z-0">
-      <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=1600&q=80"
-           alt="Authentic Indian Vegetarian Spread" class="w-full h-full object-cover" />
-    </div>
-    <div class="absolute inset-0 z-1 hero-overlay"></div>
-    <div class="relative z-10 text-center px-6 py-32 max-w-4xl mx-auto hero-content">
-      <span class="hero-badge">100% Pure Vegetarian</span>
-      <h1 class="font-serif font-black text-white leading-tight mb-6 hero-h1">
-        Madhuram Pure Veg<br /><em class="text-gold">Hotel & Restaurant</em>
-      </h1>
-      <p id="heroTagline" class="text-white/80 font-light text-xl mb-10 max-w-2xl mx-auto">
-        Authentic Flavors, Pure Vegetarian Delights
-      </p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="#menu" onclick="smoothScroll(event,'menu')"
-           class="btn-gold-hero">Explore Menu</a>
-        <a href="tel:08305005751"
-           class="btn-outline-hero">📞 Call to Order</a>
-      </div>
-    </div>
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 scroll-hint" onclick="smoothScroll(event,'menu')">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-           stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
-    </div>
-  </section>
-
-  <section id="menu" class="py-24 bg-cream">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="text-center mb-16 reveal">
-        <div class="section-label">Our Offerings</div>
-        <h2 class="section-title">Menu Highlights</h2>
-        <p class="section-sub">Crafted with pure ingredients, served with love.</p>
-      </div>
-
-      <div class="flex justify-center gap-3 mb-10 flex-wrap reveal">
-        <button class="category-tab active" data-cat="all">All</button>
-        <button class="category-tab" data-cat="starters">Starters</button>
-        <button class="category-tab" data-cat="main">Main Course</button>
-        <button class="category-tab" data-cat="thalis">Thalis</button>
-      </div>
-
-      <div id="menuGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">Madhuram</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#menu">Specialities</a></li>
+                <li><a href="#order">Order Online</a></li>
+                <li><a href="#about">Our Purity</a></li>
+                <li><a href="#reviews">Reviews</a></li>
+                <li><a href="#contact">Find Us</a></li>
+            </ul>
+            <a href="#order" class="btn nav-btn">Call to Order</a>
         </div>
-    </div>
-  </section>
+    </nav>
 
-  <section id="about" class="py-24 bg-cream-dark">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-        <div class="reveal">
-          <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80"
-               alt="Madhuram Restaurant Interior"
-               class="rounded-2xl w-full h-[420px] object-cover shadow-2xl" />
+    <section id="home" class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Madhuram Pure Veg<br><span class="accent-text">Hotel & Restaurant</span></h1>
+            <p>Experience Authentic Flavors & 100% Pure Vegetarian Culinary Delights in Bhopal</p>
+            <div class="hero-ctas">
+                <a href="#menu" class="btn btn-primary">Explore Menu</a>
+                <a href="#order" class="btn btn-secondary">Order via WhatsApp</a>
+            </div>
         </div>
-        <div class="reveal">
-          <div class="section-label">Our Story</div>
-          <h2 class="section-title text-left">Pure by Promise,<br /><span class="text-green">Authentic by Craft</span></h2>
-          <p class="text-gray-600 leading-relaxed mb-5">
-            At Madhuram, purity is not a marketing claim — it is our founding principle. Every dish that leaves our kitchen is prepared in a strictly vegetarian environment, using fresh, daily-sourced ingredients and time-honored recipes passed through generations.
-          </p>
-          <p class="text-gray-600 leading-relaxed mb-8">
-            We believe great vegetarian food deserves the same finesse and prestige as any fine dining experience. From our Royal Thalis to our slow-cooked Dal Makhani — every plate is a testament to that belief.
-          </p>
-          <div class="grid grid-cols-2 gap-5">
-            <div class="about-badge-item">
-              <div class="about-badge-icon">✓</div>
-              <span>100% Pure Vegetarian</span>
-            </div>
-            <div class="about-badge-item">
-              <div class="about-badge-icon">✓</div>
-              <span>FSSAI Certified Kitchen</span>
-            </div>
-            <div class="about-badge-item">
-              <div class="about-badge-icon">✓</div>
-              <span>Daily Fresh Ingredients</span>
-            </div>
-            <div class="about-badge-item">
-              <div class="about-badge-icon">✓</div>
-              <span>No Artificial Additives</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="py-24 bg-green text-white">
-    <div class="max-w-4xl mx-auto px-6 text-center">
-      <div class="section-label-light reveal">Guest Reviews</div>
-      <h2 class="font-serif font-bold text-4xl text-white mb-4 reveal">What Our Guests Say</h2>
-      <p class="text-white/70 mb-14 reveal">Authentic verified experiences from our community.</p>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div class="testimonial-card reveal">
-          <div class="stars">★★★★★</div>
-          <p>"The Royal Thali here is simply outstanding. Every dish is perfectly seasoned, fresh and authentic. My go-to restaurant for family dinners in Bhopal near Kolar Road."</p>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar">RS</div>
-            <div><div class="font-semibold text-white text-sm">Rahul Sharma</div><div class="text-white/50 text-xs">Verified Guest</div></div>
-          </div>
+    <section id="menu" class="section">
+        <div class="container">
+            <h2 class="section-title">Our Specialities</h2>
+            <p class="section-subtitle">Freshly prepared premium items crafted to perfection</p>
+            
+            <div class="grid" id="liveMenuContainer">
+                </div>
         </div>
-        <div class="testimonial-card reveal">
-          <div class="stars">★★★★★</div>
-          <p>"Absolutely divine taste! The Paneer Butter Masala tasted clean and premium, prepared in a perfectly hygienic pure veg environment. Fast service as well."</p>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar">PM</div>
-            <div><div class="font-semibold text-white text-sm">Priya Mehta</div><div class="text-white/50 text-xs">Verified Guest</div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="contact" class="py-24 bg-cream">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-        <div class="reveal">
-          <div class="section-label">Get in Touch</div>
-          <h2 class="section-title text-left">Reserve a Table or<br />Catering Inquiry</h2>
-          <p class="text-gray-600 mb-8 leading-relaxed">Fill in the form below. Our team will get back to you promptly to confirm your booking.</p>
-          <div class="space-y-5">
-            <div class="contact-info-item">
-              <div class="contact-icon">📍</div>
-              <p id="siteAddress">Shop no. S, 77, Nehru Nagar Main Rd, Kolar Rd, Bhopal, Madhya Pradesh 462003</p>
+    <section id="order" class="order-section">
+        <div class="container">
+            <div class="form-container">
+                <h2>Place Order / Book Table</h2>
+                <p class="form-subtitle">Details bhariye aur direct WhatsApp par send kijiye!</p>
+                
+                <form id="whatsappForm">
+                    <div class="form-group">
+                        <label for="custName">Aapka Naam (Your Name):</label>
+                        <input type="text" id="custName" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="orderType">Service Type:</label>
+                        <select id="orderType" required>
+                            <option value="Food Delivery">Food Delivery (Home Delivery)</option>
+                            <option value="Table Booking">Table Booking (Table Reserve karein)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="orderDetails">Details (Kya mangwana hai ya kitne log hain):</label>
+                        <textarea id="orderDetails" rows="4" placeholder="Example: 1 Premium Royal Thali, 2 Paneer Sabzi OR Booking for 5 People" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn-submit">
+                        <i class="fa-brands fa-whatsapp"></i> Send Details via WhatsApp
+                    </button>
+                </form>
             </div>
-            <div class="contact-info-item">
-              <div class="contact-icon">📞</div>
-              <a id="sitePhone" href="tel:08305005751" class="text-green font-semibold hover:text-gold transition-colors">08305005751</a>
-            </div>
-            <div class="contact-info-item">
-              <div class="contact-icon">🕑</div>
-              <p id="siteHours">Monday – Sunday: 11:00 AM – 11:00 PM</p>
-            </div>
-          </div>
-          <div class="mt-8 rounded-2xl overflow-hidden shadow-lg border border-gray-200" style="height:260px">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3667.170669176317!2d77.4124976!3d23.1995166!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x397c43dfa271783d%3A0xe7261d763cc6fcf7!2sNehru%20Nagar%20Main%20Rd%2C%20Bhopal%2C%20Madhya%20Pradesh%20462003!5e0!3m2!1sen!2sin!4v1710000000000!5m2!1sen!2sin"
-              width="100%" height="100%" style="border:0" allowfullscreen="" loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade" title="Madhuram Location"></iframe>
-          </div>
         </div>
-        <div class="contact-form-wrap reveal">
-          <h3 class="font-serif font-bold text-2xl text-green mb-6">Send a Message</h3>
-          <form id="contactForm" novalidate class="space-y-5">
-            <div class="form-row">
-              <div class="form-group">
-                <label for="guestName">Full Name *</label>
-                <input type="text" id="guestName" placeholder="Your name" required />
-                <span class="field-err" id="nameErr"></span>
-              </div>
-              <div class="form-group">
-                <label for="guestPhone">Phone *</label>
-                <input type="tel" id="guestPhone" placeholder="10-digit number" required />
-                <span class="field-err" id="phoneErr"></span>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="guestEmail">Email Address</label>
-              <input type="email" id="guestEmail" placeholder="optional" />
-            </div>
-            <div class="form-group">
-              <label for="inquiryType">Inquiry Type *</label>
-              <div class="select-wrap">
-                <select id="inquiryType" required>
-                  <option value="" disabled selected>— Select —</option>
-                  <option value="Table Reservation">Table Reservation</option>
-                  <option value="Catering Inquiry">Catering Inquiry</option>
-                  <option value="General Inquiry">General Inquiry</option>
-                </select>
-              </div>
-              <span class="field-err" id="typeErr"></span>
-            </div>
-            <div class="form-group">
-              <label for="guestMessage">Message / Special Instructions</label>
-              <textarea id="guestMessage" rows="4" placeholder="Number of guests, preferred date/time..."></textarea>
-            </div>
-            <button type="submit" class="btn-submit-full">Send Inquiry →</button>
-          </form>
-          <div id="formSuccess" class="form-success hidden">
-            <span>✓</span> Your inquiry has been sent! We'll contact you shortly.
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <footer class="bg-green-dark text-white/70 pt-16 pb-6">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-10 pb-10 border-b border-white/10">
-        <div>
-          <div class="flex items-center gap-2 mb-4">
-            <span class="brand-dot"></span>
-            <span class="font-serif font-bold text-2xl text-white">Madhuram</span>
-          </div>
-          <p class="text-sm leading-relaxed mb-5">Authentic Flavors, Pure Vegetarian Delights. A celebration of India's rich vegetarian culinary heritage.</p>
-          <a href="https://wa.me/918305005751" target="_blank" rel="noopener noreferrer"
-             class="inline-flex items-center gap-2 bg-[#25d366] text-white font-semibold text-sm px-5 py-2.5 rounded-full hover:bg-[#128c7e] transition-colors">
-            Chat on WhatsApp
-          </a>
+    <section id="about" class="section bg-light">
+        <div class="container about-grid">
+            <div class="about-text">
+                <div class="veg-badge">
+                    <div class="veg-circle"></div> 100% PURE VEGETARIAN
+                </div>
+                <h2>Serving Purity & Excellence Since Inception</h2>
+                <p>At Madhuram Pure Veg Hotel & Restaurant, we are deeply committed to providing uncompromised food quality. Our kitchen operates with the highest standards of sanitation, ensuring every single layout complies with strict vegetarian preparation guidelines.</p>
+                <p>Located on the bustling Kolar Road, we serve as a perfect destination for family dinners, quick lunch thalis, and festive gatherings.</p>
+                <a href="#order" class="btn btn-primary" style="margin-top: 10px;">Reserve a Table</a>
+            </div>
+            <div style="border-radius: 8px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80" alt="Clean Kitchen Dining ambiance" style="width:100%; display:block;">
+            </div>
         </div>
-        <div>
-          <h4 class="font-semibold text-white text-base mb-4">Quick Links</h4>
-          <ul class="space-y-2 text-sm">
-            <li><a href="#home"    class="footer-link" onclick="smoothScroll(event,'home')">Home</a></li>
-            <li><a href="#menu"    class="footer-link" onclick="smoothScroll(event,'menu')">Menu</a></li>
-            <li><a href="#about"   class="footer-link" onclick="smoothScroll(event,'about')">About Us</a></li>
-            <li><a href="#contact" class="footer-link" onclick="smoothScroll(event,'contact')">Contact</a></li>
-          </ul>
+    </section>
+
+    <section id="reviews" class="section">
+        <div class="container">
+            <h2 class="section-title">What Our Guests Say</h2>
+            <p class="section-subtitle">Real feedback from our regular local dining guests</p>
+            
+            <div class="reviews-grid">
+                <div class="review-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"The food taste is absolutely outstanding. If you are looking for a completely hygienic and authentic pure veg restaurant near Kolar Road, Madhuram is the absolute best choice."</p>
+                    <h4>— Local Bhopal Guide</h4>
+                </div>
+                <div class="review-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"Extremely family-friendly atmosphere. Their executive thalis have perfect portions and taste like premium home-cooked food. Highly recommended!"</p>
+                    <h4>— Happy Diner</h4>
+                </div>
+            </div>
         </div>
-        <div>
-          <h4 class="font-semibold text-white text-base mb-4">Contact</h4>
-          <address class="not-italic text-sm space-y-2">
-            <p>📍 Shop no. S, 77, Nehru Nagar Main Rd,<br />Kolar Rd, Bhopal, MP 462003</p>
-            <p><a href="tel:08305005751" class="text-gold hover:text-gold-light transition-colors font-semibold">📞 08305005751</a></p>
-            <p>🕑 Mon–Sun: 11 AM – 11 PM</p>
-          </address>
+    </section>
+
+    <footer id="contact" class="footer">
+        <div class="container footer-grid">
+            <div class="footer-info">
+                <h3>Madhuram Pure Veg</h3>
+                <p>Premium hospitality and absolute purity in every single serving.</p>
+                <p style="margin-top: 25px;"><strong>📍 Address:</strong><br>Shop no. S, 77, Nehru Nagar Main Rd,<br>Kolar Rd, Bhopal, Madhya Pradesh 462003</p>
+                <p style="margin-top: 15px;"><strong>📞 Phone:</strong><br><a href="tel:08305005751" style="color: #b45309; text-decoration: none; font-size: 18px; font-weight: 600;">08305005751</a></p>
+            </div>
+            
+            <div class="footer-map">
+                <div class="map-box">
+                    <h4>Our Location</h4>
+                    <p style="color: #bbb; font-size: 14px; margin-bottom: 15px;">Conveniently located on Nehru Nagar Main Road, Kolar Road.</p>
+                    <a href="http://maps.google.com/?q=Madhuram+Pure+Veg+Kolar+Road+Bhopal" target="_blank" class="btn btn-secondary" style="margin-left: 0; width: 100%; text-align: center; background-color: rgba(255,255,255,0.05);">🗺️ Open in Google Maps</a>
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="flex flex-col md:flex-row justify-between items-center gap-2 pt-6 text-xs text-white/40">
-        <p>© 2026 Madhuram Pure Veg Hotel & Restaurant. All rights reserved.</p>
-        <a href="admin.html" class="hover:text-white/60 transition-colors">●</a>
-      </div>
-    </div>
-  </footer>
+        
+        <div class="footer-bottom">
+            <p>© 2026 Madhuram Pure Veg Hotel & Restaurant. All Rights Reserved. Built with Purity.</p>
+        </div>
+    </footer>
 
-  <a href="https://wa.me/918305005751?text=Hello%20Madhuram!%20I%20would%20like%20to%20place%20an%20order."
-     target="_blank" rel="noopener noreferrer"
-     class="floating-wa" aria-label="Chat on WhatsApp">
-    <span class="floating-wa-pulse"></span>
-  </a>
+    <a href="https://wa.me/918305005751?text=Hello%20Madhuram%20Hotel,%20mujhe%20kuch%20poochhna%20hai." class="floating-whatsapp" target="_blank">
+        <img src="whatsapp-icon-free-png.webp?v=3" alt="WhatsApp Chat">
+    </a>
 
-  <div id="toast" class="toast"></div>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
