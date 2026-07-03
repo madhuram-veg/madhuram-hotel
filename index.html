@@ -3,72 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Madhuram Pure Veg Hotel & Restaurant</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- FontAwesome Icons for WhatsApp and Location Symbols -->
+    <title>Madhuram Pure Veg Hotel & Restaurant | Bhopal</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- WhatsApp icon ke liye FontAwesome CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/2.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* Naye Order Form aur Floating Button ke liye extra styles taaki purani CSS kharab na ho */
+        .order-section { padding: 80px 20px; background-color: #fdfdfd; }
+        .form-container { max-width: 600px; margin: 0 auto; background: #ffffff; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #eee; }
+        .form-container h2 { font-family: 'Playfair Display', serif; color: #27ae60; text-align: center; margin-bottom: 10px; font-size: 32px; }
+        .form-group { margin-bottom: 22px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 8px; font-family: 'Inter', sans-serif; font-weight: 500; color: #333; font-size: 15px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 15px; background: #fafafa; transition: all 0.3s; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #27ae60; background: #fff; outline: none; }
+        .btn-submit { width: 100%; background-color: #25d366; color: white; border: none; padding: 16px; font-size: 16px; font-family: 'Inter', sans-serif; font-weight: 600; border-radius: 8px; cursor: pointer; transition: background 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        .btn-submit:hover { background-color: #1ebd57; }
+        .floating-whatsapp { position: fixed; bottom: 30px; right: 30px; background-color: #25d366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 32px; box-shadow: 0 6px 20px rgba(0,0,0,0.2); z-index: 9999; transition: transform 0.3s; text-decoration: none; }
+        .floating-whatsapp:hover { transform: scale(1.1); color: white; }
+    </style>
 </head>
 <body>
 
-    <!-- Header / Navbar Section -->
-    <header>
-        <div class="logo">Madhuram Hotel</div>
-        <nav>
-            <a href="#home">Home</a>
-            <a href="#menu">Menu</a>
-            <a href="#about">About</a>
-            <a href="#order">Place Order</a>
-        </nav>
-    </header>
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">Madhuram</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#menu">Specialities</a></li>
+                <li><a href="#order">Order Now</a></li>
+                <li><a href="#about">Our Purity</a></li>
+                <li><a href="#reviews">Reviews</a></li>
+                <li><a href="#contact">Find Us</a></li>
+            </ul>
+            <a href="#order" class="btn nav-btn">Order Online</a>
+        </div>
+    </nav>
 
-    <!-- Home Banner Section -->
     <section id="home" class="hero">
+        <div class="hero-overlay"></div>
         <div class="hero-content">
-            <h1>100% Pure Vegetarian Culinary Delights</h1>
-            <p>Experience Authentic Flavors & Premium Hospitality in Bhopal</p>
-            <a href="#order" class="btn">Order Now via WhatsApp</a>
+            <h1>Madhuram Pure Veg<br><span class="accent-text">Hotel & Restaurant</span></h1>
+            <p>Experience Authentic Flavors & 100% Pure Vegetarian Culinary Delights in Bhopal</p>
+            <div class="hero-ctas">
+                <a href="#menu" class="btn btn-primary">Explore Menu</a>
+                <a href="#order" class="btn btn-secondary">Order via WhatsApp</a>
+            </div>
         </div>
     </section>
 
-    <!-- Order/Table Booking Form Section -->
-    <section id="order" class="order-section">
-        <h2>Place Your Order / Book a Table</h2>
-        <p>Form bhariye aur direct WhatsApp par apna order send kijiye!</p>
-        
-        <form id="whatsappForm" class="order-form">
-            <div class="form-group">
-                <label for="custName">Aapka Naam (Your Name):</label>
-                <input type="text" id="custName" placeholder="Enter your name" required>
-            </div>
+    <section id="menu" class="section">
+        <div class="container">
+            <h2 class="section-title reveal">Our Specialities</h2>
+            <p class="section-subtitle reveal">Freshly prepared premium items crafted to perfection</p>
             
-            <div class="form-group">
-                <label for="orderType">Service Type:</label>
-                <select id="orderType" required>
-                    <option value="Food Delivery">Food Delivery (Ghar par khana)</option>
-                    <option value="Table Booking">Table Booking (Hotel mein seat)</option>
-                </select>
+            <div class="grid">
+                <div class="card reveal">
+                    <div class="card-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=600&q=80" alt="Premium Veg Thali" class="card-img">
+                    </div>
+                    <div class="card-content">
+                        <h3>Premium Royal Thalis</h3>
+                        <p>A complete traditional meal featuring an assortment of seasonal vegetables, rich paneer curry, aromatic basmati rice, choice of breads, and classic Indian dessert.</p>
+                    </div>
+                </div>
+
+                <div class="card reveal">
+                    <div class="card-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&w=600&q=80" alt="Paneer Main Course" class="card-img">
+                    </div>
+                    <div class="card-content">
+                        <h3>Rich Main Course Delicacies</h3>
+                        <p>From buttery Paneer Specialities to authentic slow-cooked Dal Makhani, prepared meticulously using standard premium spices and pure dairy products.</p>
+                    </div>
+                </div>
+
+                <div class="card reveal">
+                    <div class="card-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1601050690597-df056fb4ce78?auto=format&fit=crop&w=600&q=80" alt="Indian Starters" class="card-img">
+                    </div>
+                    <div class="card-content">
+                        <h3>Crispy Appetisers & Snacks</h3>
+                        <p>Perfectly spiced, crispy, and fresh starters designed to complement your family gathering, keeping hygiene and taste at the forefront.</p>
+                    </div>
+                </div>
             </div>
-            
-            <div class="form-group">
-                <label for="orderDetails">Details (Kya order karna hai ya Kitne log hain):</label>
-                <textarea id="orderDetails" rows="4" placeholder="Example: 2 Full Shahi Paneer, 10 Butter Roti OR 4 People Booking" required></textarea>
-            </div>
-            
-            <button type="submit" class="btn btn-success">
-                <i class="fab fa-whatsapp"></i> Send Order on WhatsApp
-            </button>
-        </form>
+        </div>
     </section>
 
-    <!-- Footer Section -->
-    <footer>
-        <p>Madhuram Pure Veg Hotel & Restaurant</p>
-        <p>7, Nehru Nagar Main Rd, Kolar Rd, Bhopal, Madhya Pradesh 462003</p>
+    <!-- NAYA SECTION: WhatsApp Order Form -->
+    <section id="order" class="order-section">
+        <div class="container">
+            <div class="form-container reveal">
+                <h2>Place Order / Book Table</h2>
+                <p style="text-align: center; margin-bottom: 25px; color: #666; font-family: 'Inter', sans-serif;">Details bhariye aur direct WhatsApp par send kijiye!</p>
+                
+                <form id="whatsappForm">
+                    <div class="form-group">
+                        <label for="custName">Aapka Naam (Your Name):</label>
+                        <input type="text" id="custName" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="orderType">Service Type:</label>
+                        <select id="orderType" required>
+                            <option value="Food Delivery">Food Delivery (Home Delivery)</option>
+                            <option value="Table Booking">Table Booking (Table Reserve karein)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="orderDetails">Details (Kya mangwana hai ya kitne log hain):</label>
+                        <textarea id="orderDetails" rows="4" placeholder="Example: 1 Premium Royal Thali, 2 Paneer Sabzi OR Booking for 5 People" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn-submit">
+                        <i class="fab fa-whatsapp" style="font-size: 20px;"></i> Send Details via WhatsApp
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section bg-light">
+        <div class="container about-grid">
+            <div class="about-text reveal">
+                <div class="veg-badge">
+                    <div class="veg-circle"></div> 100% PURE VEGETARIAN
+                </div>
+                <h2>Serving Purity & Excellence Since Inception</h2>
+                <p>At Madhuram Pure Veg Hotel & Restaurant, we are deeply committed to providing uncompromised food quality. Our kitchen operates with the highest standards of sanitation, ensuring every single layout complies with strict vegetarian preparation guidelines.</p>
+                <p>Located on the bustling Kolar Road, we serve as a perfect destination for family dinners, quick lunch thalis, and festive gatherings.</p>
+                <a href="#order" class="btn btn-primary" style="margin-top: 10px;">Reserve a Table</a>
+            </div>
+            <div class="reveal" style="border-radius: 8px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80" alt="Clean Kitchen Dining ambiance" style="width:100%; display:block;">
+            </div>
+        </div>
+    </section>
+
+    <section id="reviews" class="section">
+        <div class="container">
+            <h2 class="section-title reveal">What Our Guests Say</h2>
+            <p class="section-subtitle reveal">Real feedback from our regular local dining guests</p>
+            
+            <div class="reviews-grid">
+                <div class="review-card reveal">
+                    <div class="stars">★★★★★</div>
+                    <p>"The food taste is absolutely outstanding. If you are looking for a completely hygienic and authentic pure veg restaurant near Kolar Road, Madhuram is the absolute best choice."</p>
+                    <h4>— Local Bhopal Guide</h4>
+                </div>
+                <div class="review-card reveal">
+                    <div class="stars">★★★★★</div>
+                    <p>"Extremely family-friendly atmosphere. Their executive thalis have perfect portions and taste like premium home-cooked food. Highly recommended!"</p>
+                    <h4>— Happy Diner</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact" class="footer">
+        <div class="container footer-grid">
+            <div class="footer-info">
+                <h3>Madhuram Pure Veg</h3>
+                <p>Premium hospitality and absolute purity in every single serving.</p>
+                <p style="margin-top: 25px;"><strong>📍 Address:</strong><br>Shop no. S, 77, Nehru Nagar Main Rd,<br>Kolar Rd, Bhopal, Madhya Pradesh 462003</p>
+                <p style="margin-top: 15px;"><strong>📞 Phone:</strong><br><a href="tel:08305005751" style="color: var(--accent-color); text-decoration: none; font-size: 18px; font-weight: 600;">08305005751</a></p>
+            </div>
+            
+            <div class="footer-map">
+                <div class="map-box">
+                    <h4>Our Location</h4>
+                    <p style="color: #bbb; font-size: 14px; margin-bottom: 15px;">Conveniently located on Nehru Nagar Main Road, Kolar Road.</p>
+                    <a href="https://maps.google.com/?q=Shop+no.+S,+77,+Nehru+Nagar+Main+Rd,+Kolar+Rd,+Bhopal,+Madhya+Pradesh+462003" target="_blank" class="btn btn-secondary" style="margin-left: 0; width: 100%; text-align: center; background-color: rgba(255,255,255,0.05);">🗺️ Open in Google Maps</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© 2026 Madhuram Pure Veg Hotel & Restaurant. All Rights Reserved. Built with Purity.</p>
+        </div>
     </footer>
 
-    <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/918305005751?text=Hello%20Madhuram%20Hotel,%20mujhe%20kuch%20query%20hai." 
-       class="floating-whatsapp" target="_blank" id="floatingWA">
+    <!-- FLOATING WHATSAPP BUTTON -->
+    <a href="https://wa.me/918305005751?text=Hello%20Madhuram%20Hotel,%20mujhe%20kuch%20poochhna%20hai." 
+       class="floating-whatsapp" target="_blank">
         <i class="fab fa-whatsapp"></i>
     </a>
 
