@@ -14,8 +14,13 @@ const Store = {
     } catch(e) { return []; }
   },
   saveMenu(m) { 
-    localStorage.setItem('madhuramMenu', JSON.stringify(m)); 
-    window.dispatchEvent(new Event('storage'));
+    try {
+      localStorage.setItem('madhuramMenu', JSON.stringify(m)); 
+      window.dispatchEvent(new Event('storage'));
+    } catch (error) {
+      console.error("Storage write failed:", error);
+      alert("❌ Image File is Too Large!\n\nYour browser limits dashboard storage to 5MB total. Please upload a smaller/compressed photo (under 500KB) or use a Web Image URL link instead.");
+    }
   },
   getInquiries() { 
     try {
@@ -35,10 +40,10 @@ const Store = {
   setAuth() { sessionStorage.setItem('madhuramAdminAuth', 'true'); },
   clearAuth() { sessionStorage.removeItem('madhuramAdminAuth'); }
 };
-// Gatekeeper Login Verification (With Auto-Trim to prevent space errors)
+
+// Gatekeeper Login Verification with Auto-Trim
 document.getElementById('loginForm')?.addEventListener('submit', e => {
   e.preventDefault();
-  // .trim() removes any accidental spaces before or after the text
   const user = document.getElementById('loginUser').value.trim();
   const pass = document.getElementById('loginPass').value.trim();
   
@@ -49,6 +54,13 @@ document.getElementById('loginForm')?.addEventListener('submit', e => {
     document.getElementById('loginErr').classList.remove('hidden');
   }
 });
+
+function initializeInterface() {
+  document.getElementById('loginScreen').classList.add('hidden');
+  document.getElementById('dashboard').classList.remove('hidden');
+  loadDashboardData();
+}
+
 function loadDashboardData() {
   const menu = Store.getMenu();
   const inquiries = Store.getInquiries();
