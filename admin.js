@@ -7,34 +7,113 @@ const DEFAULT_SETTINGS = {
 };
 
 const Store = {
-  getMenu() { return JSON.parse(localStorage.getItem('madhuramMenu')) || []; },
-  saveMenu(m) { localStorage.setItem('madhuramMenu', JSON.stringify(m)); },
-  getInquiries() { return JSON.parse(localStorage.getItem('madhuramInquiries')) || []; },
-  getSettings() { return JSON.parse(localStorage.getItem('madhuramSettings')) || DEFAULT_SETTINGS; },
-  saveSettings(s) { localStorage.setItem('madhuramSettings', JSON.stringify(s)); }
+  getMenu() { 
+    try {
+      const stored = localStorage.getItem('madhuramMenu');
+      return stored ? JSON.parse(stored) : [];
+    } catch(e) { return []; }
+  },
+  saveMenu(m) { 
+    localStorage.setItem('madhuramMenu', JSON.stringify(m)); 
+    window.dispatchEvent(new Event('storage'));
+  },
+  getInquiries() { 
+    try {
+      return JSON.parse(localStorage.getItem('madhuramInquiries')) || []; 
+    } catch(e) { return []; }
+  },
+  getSettings() { 
+    try {
+      return JSON.parse(localStorage.getItem('madhuramSettings')) || DEFAULT_SETTINGS; 
+    } catch(e) { return DEFAULT_SETTINGS; }
+  },
+  saveSettings(s) { 
+    localStorage.setItem('madhuramSettings', JSON.stringify(s)); 
+    window.dispatchEvent(new Event('storage'));
+  },
+  isLoggedIn() { return sessionStorage.getItem('madhuramAdminAuth') === 'true'; },
+  setAuth() { sessionStorage.setItem('madhuramAdminAuth', 'true'); },
+  clearAuth() { sessionStorage.removeItem('madhuramAdminAuth'); }
 };
 
+// Gatekeeper Login Verification
 document.getElementById('loginForm')?.addEventListener('submit', e => {
   e.preventDefault();
-  if(document.getElementById('loginUser').value === 'admin' && document.getElementById('loginPass').value === 'madhuram2024') {
-    document.getElementById('loginScreen').classList.add('hidden');
-    document.getElementById('dashboard').classList.remove('hidden');
-    loadDashboard();
+  const user = document.getElementById('loginUser').value;
+  const pass = document.getElementById('loginPass').value;
+  
+  if (user === 'admin' && pass === 'madhuram2024') {
+    Store.setAuth();
+    initializeInterface();
   } else {
     document.getElementById('loginErr').classList.remove('hidden');
   }
 });
 
-function loadDashboard() {
+function initializeInterface() {
+  document.getElementById('loginScreen').classList.add('hidden');
+  document.getElementById('dashboard').classList.remove('hidden');
+  loadDashboardData();
+}
+
+function loadDashboardData() {
   const menu = Store.getMenu();
   const inquiries = Store.getInquiries();
   
   document.getElementById('statMenuItems').textContent = menu.length;
   document.getElementById('statReservations').textContent = inquiries.length;
   
-  document.getElementById('menuTableBody').innerHTML = menu.map(i => `<tr><td><b>${i.name}</b></td><td>${i.category}</td><td>${i.price}</td><td><button onclick="deleteItem(${i.id})" class="text-red-500 text-xs">Delete</button></td></tr>`).join('');
-  document.getElementById('inquiryTableBody').innerHTML = inquiries.map(i => `<tr><td>${i.name}</td><td>${i.phone}</td><td>${i.type}</td><td>${i.date}</td></tr>`).join('');
-  
+  // Render Dynamic Inventory Records
+  const tableBody = document.getElementById('menuTableBody');
+  if (menu.length === 0) {
+    tableBody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-400 text-xs font-medium">No records matching live structural storage.</td></tr>`;
+  } else {
+    tableBody.innerHTML = menu.map(i => `
+      <tr class="hover:bg-slate-50/80 transition-colors">
+        <td class="p-4">
+          <div class="w-12 h-12 rounded-xl overflow-hidden border border-slate-100 bg-slate-100 shrink-0 shadow-inner">
+            <img src="${i.image || 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=100&q=75'}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=100&q=75'" />
+          </div>
+        </td>
+        <td class="p-4 font-semibold text-slate-900">${escapeHTML(i.name)}</td>
+        <td class="p-4"><span class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 uppercase tracking-wider">${i.category}</span></td>
+        <td class="p-4 font-mono font-bold text-brand">${i.price}</td>
+        <td class="p-4 text-right">
+          <button onclick="deleteItem(${i.id})" class="text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-all">Purge</button>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  // Render Guest Feedback Inbound Logs
+  document.getElementById('inquiryTableBody').innerHTML = inquiries.length === 0 ? 
+    `<tr><td colspan="4" class="p-8 text-center text-slate-400 text-xs font-medium">Inbound tracking pipeline empty.</td></tr>` :
+    inquiries.map(i => `
+      <tr class="hover:bg-slate-50/80 transition-colors">
+        <td class="p-4 font-semibold text-slate-900">${escapeHTML(i.name)}</td>
+        <td class="p-4 font-mono text-xs text-slate-600">${escapeHTML(i.phone)}</td>
+        <td class="p-4"><span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 text-xs font-medium border border-emerald-100">${escapeHTML(i.type)}</span></td>
+        <td class="p-4 text-xs text-slate-400 font-medium">${i.date}</td>
+      </tr>
+    `).join('');
+
+  // Hydrate Analytics Breakdowns
+  document.getElementById('overviewInquiries').innerHTML = inquiries.slice(0, 3).map(i => `
+    <div class="py-3 flex justify-between items-center">
+      <div><p class="font-semibold text-slate-800">${escapeHTML(i.name)}</p><p class="text-xs text-slate-400">${i.date}</p></div>
+      <span class="text-[10px] uppercase font-bold tracking-widest text-slate-400">${escapeHTML(i.type)}</span>
+    </div>
+  `).join('') || `<p class="py-4 text-slate-400 text-xs">No notifications pipeline detected.</p>`;
+
+  const cats = { starters: 0, main: 0, thalis: 0 };
+  menu.forEach(m => { if(cats[m.category] !== undefined) cats[m.category]++; });
+  document.getElementById('overviewCategories').innerHTML = Object.entries(cats).map(([c, count]) => `
+    <div class="py-3 flex justify-between items-center uppercase tracking-wider text-xs font-semibold">
+      <span class="text-slate-500">${c === 'main' ? 'Main Course' : c}</span>
+      <span class="font-mono text-brand bg-slate-100 px-2 py-0.5 rounded-md">${count} units</span>
+    </div>
+  `).join('');
+
   document.getElementById('setAddress').value = Store.getSettings().address;
   document.getElementById('setPhone').value = Store.getSettings().phone;
 }
@@ -42,7 +121,7 @@ function loadDashboard() {
 function deleteItem(id) {
   const updated = Store.getMenu().filter(item => item.id !== id);
   Store.saveMenu(updated);
-  loadDashboard();
+  loadDashboardData();
 }
 
 function convertImageToBase64(file) {
@@ -54,66 +133,65 @@ function convertImageToBase64(file) {
   });
 }
 
+function logout() {
+  Store.clearAuth();
+  location.reload();
+}
+
 document.querySelectorAll('.sidebar-link').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.sidebar-link').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
     document.getElementById('panel-' + btn.dataset.panel).classList.remove('hidden');
-    document.getElementById('pageTitle').textContent = btn.textContent;
+    document.getElementById('pageTitle').textContent = btn.textContent.trim();
   });
 });
 
 function openMenuModal() { document.getElementById('menuModal').classList.remove('hidden'); }
 function closeMenuModal() { document.getElementById('menuModal').classList.add('hidden'); }
 
-// नया डुअल-इमेज सबमिशन हैंडलर (अपलोड फ़ाइल या URL लिंक दोनों का समर्थन करता है)
 document.getElementById('menuItemForm').addEventListener('submit', async function(e){
   e.preventDefault();
   
-  const current = Store.getMenu();
-  const nameInput = document.getElementById('itemName').value.trim();
-  const categoryInput = document.getElementById('itemCategory').value;
-  const priceInput = document.getElementById('itemPrice').value.trim();
+  const currentMenu = Store.getMenu();
+  const nameVal = document.getElementById('itemName').value.trim();
+  const catVal = document.getElementById('itemCategory').value;
+  const priceVal = document.getElementById('itemPrice').value.trim();
   
   const fileInput = document.getElementById('itemImageFile');
-  const urlInput = document.getElementById('itemImageUrl').value.trim();
+  const urlVal = document.getElementById('itemImageUrl').value.trim();
   
-  let finalImageUrl = '';
+  let structuralAssetUrl = '';
 
-  // 1. जाँचें कि क्या यूजर ने फ़ाइल अपलोड की है
   if (fileInput.files && fileInput.files[0]) {
     try {
-      finalImageUrl = await convertImageToBase64(fileInput.files[0]);
+      structuralAssetUrl = await convertImageToBase64(fileInput.files[0]);
     } catch (err) {
-      alert("Error reading file.");
+      alert("Asset pipeline ingestion fault.");
       return;
     }
-  } 
-  // 2. यदि फ़ाइल नहीं है, तो देखें कि क्या कोई URL लिंक दिया गया है
-  else if (urlInput !== '') {
-    finalImageUrl = urlInput;
-  } 
-  // 3. यदि दोनों खाली हैं, तो डिफ़ॉल्ट इमेज का उपयोग करें
-  else {
-    finalImageUrl = 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&q=75';
+  } else if (urlVal !== '') {
+    structuralAssetUrl = urlVal;
+  } else {
+    structuralAssetUrl = 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&q=75';
   }
 
-  const formattedPrice = priceInput.startsWith('₹') ? priceInput : '₹' + priceInput;
+  const formattedPrice = priceVal.startsWith('₹') ? priceVal : '₹' + priceVal;
 
-  current.push({
+  currentMenu.push({
     id: Date.now(),
-    name: nameInput,
-    category: categoryInput,
+    name: nameVal,
+    category: catVal,
     price: formattedPrice,
-    image: finalImageUrl,
+    image: structuralAssetUrl,
     desc: 'Freshly prepared authentic pure vegetarian delicacy.'
   });
   
-  Store.saveMenu(current);
+  Store.saveMenu(currentMenu);
   this.reset();
   closeMenuModal();
-  loadDashboard();
+  loadDashboardData();
 });
 
 document.getElementById('settingsForm').addEventListener('submit', function(e){
@@ -122,5 +200,16 @@ document.getElementById('settingsForm').addEventListener('submit', function(e){
   base.address = document.getElementById('setAddress').value;
   base.phone = document.getElementById('setPhone').value;
   Store.saveSettings(base);
-  alert('Settings Saved Successfully!');
+  alert('Operational matrices synced.');
+});
+
+function escapeHTML(str) {
+  if (!str) return '';
+  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (Store.isLoggedIn()) {
+    initializeInterface();
+  }
 });
